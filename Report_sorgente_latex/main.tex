@@ -43,7 +43,7 @@
 \begin{abstract}
 %L'abstract serve a riassumere brevemente quello che presenta il report. Per istruzioni dettagliate sul formato fare riferimento al file ``New\_IEEEtran\_how-to.tex''.
 Il report descrive il processo di selezione, addestramento e validazione di alcuni algoritmi di classificazione binaria implementati in Python facendo largo uso della libreria Scikit-Learn.
-In particolare, vengono analizzati l’approccio adottato, le caratteristiche del dataset utilizzato, il preprocessing e l’efficacia dell'algoritmo proposto nel distinguere correttamente tra pazienti diabetici e non diabetici.
+In particolare, vengono analizzati l’approccio adottato, le caratteristiche del dataset utilizzato, il preprocessing e l’efficacia degli algoritmi proposti nel distinguere correttamente tra pazienti diabetici e non diabetici.
 \end{abstract}
 
 \section{Introduzione}
@@ -59,7 +59,7 @@ In questa ricerca, abbiamo utilizzato diversi algoritmi di classificazione binar
 
 \section{Analisi dei dati}
 %Caratterizzare i dati tramite grafici e descrizione testuale.
-Il materiale fornito è comprensivo di due dataset, uno per la fase di training e uno per quella di test, questi presentano informazioni cliniche e demografiche raccolte su pazienti con e senza diabete. Il dataset di training è composto da 588 record, di cui solo un quarto di questi rappresenta pazienti con il diabete. Le variabili considerate includono fattori quali sesso, età, ipertensione, malattie cardiache, abitudini legate al fumo, indice di massa corporea (BMI), livello di emoglobina glicata (HbA1c), livello di glucosio nel sangue, sensibilità all’insulina, interazione tra BMI e glucosio e presenza di Troponina T. 
+Il materiale fornito è comprensivo di due dataset, uno per la fase di training e uno per quella di test. Questi presentano informazioni cliniche e demografiche raccolte su pazienti con e senza diabete. Il dataset di training è composto da 588 record, di cui solo un quarto di questi rappresenta pazienti con il diabete. Le variabili considerate includono fattori quali sesso, età, ipertensione, malattie cardiache, abitudini legate al fumo, indice di massa corporea (BMI), livello di emoglobina glicata (HbA1c), livello di glucosio nel sangue, sensibilità all’insulina, interazione tra BMI e glucosio e presenza di Troponina T. 
 
 \begin{figure}[htbp]
     \centering
@@ -113,7 +113,7 @@ Il tuning degli iperparametri è stato effettuato tramite \texttt{GridSearchCV},
 Una volta individuati gli iparametri migliori, il modello è stato allenato nuovamente su tutto il dataset di train.
 
 \subsection{Decision Tree}
-Sono stati testati diversi iperparametri per il Decision Tree: come misura d’impurità \textit{Gini index} e \textit{Entropy}; profondità massima (10, 20, 50); numero minimo di campioni per split (2, 5, 10); e soglia minima di riduzione dell’impurità (0.001, 0.01, 0.1). La configurazione ottimale è risultata \{Gini, 20, 2, 0.001\}.Dall’albero risultante, riportato nella Figura \ref{tree}, è possibile identificare visualmente le feature che maggiormente influenzano la classificazione, essendo utilizzate come attributi di splitting nei nodi più alti. Come ipotizzato precedentemente, gli attributi \emph{HbA1c\_level} e \emph{blood\_glucose\_level} risultano particolarmente rilevanti, insieme a \emph{age} e \emph{bmi}, presenti anche loro tra i primi nodi di splitting.
+Sono stati testati diversi iperparametri per il Decision Tree: come misura d’impurità \textit{Gini index} e \textit{Entropy}; profondità massima (10, 20, 50); numero minimo di campioni per split (2, 5, 10) e soglia minima di riduzione dell’impurità (0.001, 0.01, 0.1). La configurazione ottimale è risultata \{Gini, 20, 2, 0.001\}. Dall’albero risultante, riportato nella Figura \ref{tree}, è possibile identificare visualmente le feature che maggiormente influenzano la classificazione, essendo utilizzate come attributi di splitting nei nodi più alti. Come ipotizzato precedentemente, gli attributi \emph{HbA1c\_level} e \emph{blood\_glucose\_level} risultano particolarmente rilevanti, insieme a \emph{age} e \emph{bmi}, presenti anche loro tra i primi nodi di splitting.
 
 
 \begin{figure} [H]
@@ -127,13 +127,13 @@ Sono stati testati diversi iperparametri per il Decision Tree: come misura d’i
 Per il Random Forest sono stati testati diversi iperparametri: numero di alberi stimatori (50, 100), profondità massima (10, 20, 50), minimo numero di campioni per split (2, 5, 10) e soglia minima di riduzione dell’impurità (0.01, 0.1, 0). L’ottimizzazione ha individuato come configurazione migliore \{50, 50, 2, 0.0\}.
 
 \subsection{Support vector Machine}
-I prinicipali iperparamenti del SVM testati sono stati i seguenti seguenti: il kernel, che definisce il tipo di confine decisionale scelto tra lineare, rbf e sigmoid; il parametro C, il coefficiente di regolarizzazione tra 0.01, 0.2, 2, 10; il gamma, che controlla l’influenza dei singoli punti tra i valori auto (che corrisponde a $1 / \text{num\_feature}$), 0.01 e 1/30. La combinazione di parametri che è risultata migliore è \{rbf, 2, auto\}.
+I prinicipali iperparametri del SVM testati sono stati i seguenti: il kernel, che definisce il tipo di confine decisionale (scelto tra lineare, rbf e sigmoid); il parametro C, il coefficiente di regolarizzazione tra 0.01, 0.2, 2, 10; il gamma, che controlla l’influenza dei singoli punti tra i valori auto (che corrisponde a $1 / \text{num\_feature}$), 0.01 e 1/30. La combinazione di parametri che è risultata migliore è \{rbf, 2, auto\}.
 
 \subsection{Multi-layer Perceptron}
 Per la grid-search del MLP sono state testate diverse configurazioni di rete, variando numero di layer e neuroni ((15,7,15), (11,15,11), (11,11,11,11,11)), funzioni di attivazione (ReLU, identità), learning rate (costante, adattivo) e solver (\textit{Adam}, \textit{sgd}). Il numero massimo di iterazioni è stato fissato a 3000.
 La combinazione migliore è risultata \{ (15, 7, 15), ReLu, learning rate adattativo, solver adam\}.
 
-Il fatto che tra le migliori performance del MLP ve ne sia una ottenuta con funzione di attivazione identitaria (ovvero con una rete lineare) ci ha suggerito che probabilmente una PCA \footnote{PRINCIPAL COMPONENT ANALYSIS: metodo che utilizza la combinazione lineare delle feature e la matrice di covarianza per la ricerca delle direzioni di massima varianza spiegata. Nel seguente dataset, l'85\% della varianza è spiegato da 6 principal component
+Il fatto che tra le migliori performance del MLP ve ne sia una ottenuta con funzione di attivazione identitaria (ovvero con una rete lineare) ci ha suggerito che probabilmente una PCA \footnote{PRINCIPAL COMPONENT ANALYSIS: metodo che utilizza la combinazione lineare delle feature e la matrice di covarianza per la ricerca delle direzioni di massima varianza spiegata. Nel dataset considerato, l'85\% della varianza è spiegato da 6 principal component
 \begin{figure} [H]
     \centering
     \includegraphics[width=0.3\linewidth]{varianzaSpiegataCumulativa.pdf}
@@ -220,7 +220,7 @@ Actual No Diabetes & 382 & 4 \\
 Actual Diabetes & 11 & 130 \\
 \bottomrule
 \end{tabular}
-\caption{Matrice di confusione del train DEL SVM.}
+\caption{Matrice di confusione del train del SVM.}
 \label{tab:SVM_CF_TRAIN}
 \end{table}
 
@@ -296,7 +296,8 @@ Il Random Forest risulta il modello migliore, probabilmente per la relativa semp
 
 Nel Random Forest, per la classe dei pazienti malati si ottiene una precisione pari a 1 e un recall pari a 0.92 ciò significa che tutti i casi predetti come malati sono corretti, ma alcuni pazienti malati non vengono riconosciuti, un aspetto critico poiché sarebbe preferibile evitare di trascurare casi potenzialmente gravi.
 
-L’SVM mostra performance più equilibrate, con precisione 0.94 e recall 0.86 sulla classe 1, risultando abbastanza affidabile nel rilevare il diabete, anche se tende a non identificare tutti i positivi. Dal punto di vista interpretativo, l’SVM è più trasparente rispetto al MLP, soprattutto con kernel lineare, ma meno rispetto ai modelli basati su alberi decisionali poiché l'SVM divide i dati secondo degli iperpiani, non necessariamente lineari, in dimensioni alte.
+L’SVM mostra performance più equilibrate, con precisione 0.94 e recall 0.86 sulla classe 1, risultando abbastanza affidabile nel rilevare il diabete, anche se tende a non identificare tutti i positivi. Dal punto di vista interpretativo, l'SVM sarebbe più interpretabile del MLP solo con kernel lineare e numero di feature molto basso (2 o 3). In generale, invece, si comporta come una black box.
+%l’SVM è più trasparente rispetto al MLP, soprattutto con kernel lineare, ma meno rispetto ai modelli basati su alberi decisionali poiché l'SVM divide i dati secondo degli iperpiani, non necessariamente lineari, in dimensioni alte.
 
 
 %il modello è molto cauto nel classificare un caso come "malato", ma quando lo fa, non sbaglia mai
